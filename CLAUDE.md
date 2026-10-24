@@ -14,7 +14,7 @@ This is a research-and-report workspace, not a code project.
 ```
 agent_09/
 ├── CLAUDE.md      # Project rules (this file)
-├── .gitignore     # Ignores Office lock files (~$*) and OS junk
+├── .gitignore     # Ignores Office lock files (~$*), OS junk and .playwright-mcp/ logs
 ├── .claude/
 │   ├── rules/
 │   │   └── ppt-rule-v1/   # Always-loaded rules for building .pptx decks
@@ -24,6 +24,9 @@ agent_09/
 │           ├── SKILL.md
 │           ├── references/python_pptx_api.md
 │           └── scripts/build_pptx.py
+├── blog/          # Naver blog drafts: blog/<topic>/post.md (English source)
+│   └── ai_agent/
+│       └── post.md
 ├── references/    # Design references (.md, English) for deliverables
 │   └── ppt/
 │       └── slide-design-system.md   # Orange slide design system (colors, fonts, layout)
@@ -35,6 +38,7 @@ agent_09/
 
 - Save research results (`.md`) in `research/`.
 - Save reports (`.docx`) in `report/`. Do not leave deliverables in the project root.
+- Save blog drafts in `blog/<topic>/post.md`; the published Korean text is its translation in `translate/blog/<topic>/post.md`. Unsplash images are only used for upload and are not kept in the repo (credits and links stay in `post.md`).
 - Save presentations (`.pptx`) in `slides/`, using the `mk-ppt` skill (`.claude/skills/mk-ppt/`).
 - For any `.pptx` work, apply `.claude/rules/ppt-rule-v1/ppt-rule-v1.md` first. Priority: ppt-rule-v1 → the user's design `.md` → `mk-ppt` defaults.
 - Never overwrite an existing deliverable unless the user asks. Create a new version with a `_v2`, `_v3`, … suffix instead (e.g. `ai_development_research_v2.md`, `AI_발전_보고서_v2.docx`).
