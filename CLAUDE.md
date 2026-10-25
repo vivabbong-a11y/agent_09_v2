@@ -17,6 +17,8 @@ agent_09/
 ├── .gitignore     # Ignores Office lock files (~$*), OS junk and .playwright-mcp/ logs
 ├── .claude/
 │   ├── rules/
+│   │   ├── browser-rule-v1/   # Rules for when and how to use the Playwright MCP
+│   │   │   └── browser-rule-v1.md
 │   │   └── ppt-rule-v1/   # Always-loaded rules for building .pptx decks
 │   │       └── ppt-rule-v1.md
 │   └── skills/
@@ -24,9 +26,15 @@ agent_09/
 │           ├── SKILL.md
 │           ├── references/python_pptx_api.md
 │           └── scripts/build_pptx.py
-├── blog/          # Naver blog drafts: blog/<topic>/post.md (English source)
-│   └── ai_agent/
-│       └── post.md
+├── work/          # Content work for publishing (blog posts and card news)
+│   ├── blog/      # Naver blog drafts: work/blog/<topic>/post.md (English source)
+│   │   └── ai_agent/
+│   │       └── post.md
+│   └── card_news/ # Card news plans (.md, English): work/card_news/<topic>/plan.md
+│       └── korean_favorite_pens/
+│           ├── plan.md
+│           ├── images/   # Generated card images (thumbnail_01.png, ...)
+│           └── exports/  # Final PNGs exported from Figma (thumbnail_v1.png, ...)
 ├── references/    # Design references (.md, English) for deliverables
 │   └── ppt/
 │       └── slide-design-system.md   # Orange slide design system (colors, fonts, layout)
@@ -38,9 +46,11 @@ agent_09/
 
 - Save research results (`.md`) in `research/`.
 - Save reports (`.docx`) in `report/`. Do not leave deliverables in the project root.
-- Save blog drafts in `blog/<topic>/post.md`; the published Korean text is its translation in `translate/blog/<topic>/post.md`. Unsplash images are only used for upload and are not kept in the repo (credits and links stay in `post.md`).
+- Save blog drafts in `work/blog/<topic>/post.md`; the published Korean text is its translation in `translate/work/blog/<topic>/post.md`. Unsplash images are only used for upload and are not kept in the repo (credits and links stay in `post.md`).
+- Save card news plans in `work/card_news/<topic>/plan.md` (8 cards, card 1 is the thumbnail); the Korean text is its translation in `translate/work/card_news/<topic>/plan.md`.
 - Save presentations (`.pptx`) in `slides/`, using the `mk-ppt` skill (`.claude/skills/mk-ppt/`).
 - For any `.pptx` work, apply `.claude/rules/ppt-rule-v1/ppt-rule-v1.md` first. Priority: ppt-rule-v1 → the user's design `.md` → `mk-ppt` defaults.
+- For any task that could involve a web browser, apply `.claude/rules/browser-rule-v1/browser-rule-v1.md` first: trigger keywords (e.g. "브라우저를 열어서", "웹제어", "직접 작업") auto-invoke the Playwright MCP; otherwise ask the user for consent before calling it.
 - Never overwrite an existing deliverable unless the user asks. Create a new version with a `_v2`, `_v3`, … suffix instead (e.g. `ai_development_research_v2.md`, `AI_발전_보고서_v2.docx`).
 
 ## Workflow

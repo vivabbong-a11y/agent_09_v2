@@ -1,6 +1,6 @@
 # What Is an AI Agent? Differences from Chatbots, How It Works, and Use Cases
 
-> English source of the Naver blog post. The published Korean text is `translate/blog/ai_agent/post.md`.
+> English source of the Naver blog post. The published Korean text is `translate/work/blog/ai_agent/post.md`.
 
 [Image 1: 01_hero.jpg]
 

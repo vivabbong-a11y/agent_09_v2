@@ -17,6 +17,8 @@ agent_09/
 ├── .gitignore     # Office 잠금 파일(~$*), OS 임시 파일, .playwright-mcp/ 로그 제외
 ├── .claude/
 │   ├── rules/
+│   │   ├── browser-rule-v1/   # Playwright MCP를 언제, 어떻게 쓸지 정한 규칙
+│   │   │   └── browser-rule-v1.md
 │   │   └── ppt-rule-v1/   # .pptx 제작 시 항상 로드되는 규칙
 │   │       └── ppt-rule-v1.md
 │   └── skills/
@@ -24,9 +26,15 @@ agent_09/
 │           ├── SKILL.md
 │           ├── references/python_pptx_api.md
 │           └── scripts/build_pptx.py
-├── blog/          # 네이버 블로그 원고: blog/<주제>/post.md (영문 원본)
-│   └── ai_agent/
-│       └── post.md
+├── work/          # 게시용 콘텐츠 작업물 (블로그 원고와 카드뉴스)
+│   ├── blog/      # 네이버 블로그 원고: work/blog/<주제>/post.md (영문 원본)
+│   │   └── ai_agent/
+│   │       └── post.md
+│   └── card_news/ # 카드뉴스 기획안 .md (영어): work/card_news/<주제>/plan.md
+│       └── korean_favorite_pens/
+│           ├── plan.md
+│           ├── images/   # 생성한 카드 이미지 (thumbnail_01.png 등)
+│           └── exports/  # Figma에서 내보낸 최종 PNG (thumbnail_v1.png 등)
 ├── references/    # 산출물 제작용 디자인 참고 자료 .md (영어)
 │   └── ppt/
 │       └── slide-design-system.md   # 오렌지 슬라이드 디자인 시스템 (색상, 폰트, 레이아웃)
@@ -38,9 +46,11 @@ agent_09/
 
 - 자료조사 결과(`.md`)는 `research/`에 저장합니다.
 - 보고서(`.docx`)는 `report/`에 저장합니다. 산출물을 프로젝트 루트에 두지 않습니다.
-- 블로그 원고는 `blog/<주제>/post.md`에 저장합니다. 실제 게시하는 한글 본문은 번역본 `translate/blog/<주제>/post.md`입니다. Unsplash 이미지는 업로드용으로만 쓰고 저장소에는 보관하지 않습니다(출처와 링크는 `post.md`에 남김).
+- 블로그 원고는 `work/blog/<주제>/post.md`에 저장합니다. 실제 게시하는 한글 본문은 번역본 `translate/work/blog/<주제>/post.md`입니다. Unsplash 이미지는 업로드용으로만 쓰고 저장소에는 보관하지 않습니다(출처와 링크는 `post.md`에 남김).
+- 카드뉴스 기획안은 `work/card_news/<주제>/plan.md`에 저장합니다(8장, 1장은 썸네일). 한글본은 번역본 `translate/work/card_news/<주제>/plan.md`입니다.
 - 발표 자료(`.pptx`)는 `mk-ppt` 스킬(`.claude/skills/mk-ppt/`)을 사용해 `slides/`에 저장합니다.
 - `.pptx` 작업에는 `.claude/rules/ppt-rule-v1/ppt-rule-v1.md`를 가장 먼저 적용합니다. 우선순위: ppt-rule-v1 → 사용자의 디자인 `.md` → `mk-ppt` 기본값.
+- 웹 브라우저가 쓰일 수 있는 작업에는 `.claude/rules/browser-rule-v1/browser-rule-v1.md`를 가장 먼저 적용합니다. 트리거 키워드(예: "브라우저를 열어서", "웹제어", "직접 작업")가 있으면 Playwright MCP를 자동 호출하고, 없으면 호출 전에 사용자에게 동의를 구합니다.
 - 사용자가 요청하지 않는 한 기존 산출물을 덮어쓰지 않습니다. 대신 `_v2`, `_v3`, … 처럼 접미사를 붙인 새 버전을 만듭니다(예: `ai_development_research_v2.md`, `AI_발전_보고서_v2.docx`).
 
 ## 작업 방식

@@ -1,7 +1,7 @@
 # Research Notes: What Is an AI Agent? (for Naver blog post)
 
 - Date: 2026-10-24
-- Purpose: Source material for the Naver blog post "AI 에이전트란?" (draft in `blog/ai_agent/`)
+- Purpose: Source material for the Naver blog post "AI 에이전트란?" (draft in `work/blog/ai_agent/`)
 
 ## 1. Definition
 
