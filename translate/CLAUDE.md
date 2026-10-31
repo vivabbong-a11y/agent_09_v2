@@ -16,6 +16,9 @@ agent_09/
 ├── CLAUDE.md      # 프로젝트 규칙 (이 파일)
 ├── .gitignore     # Office 잠금 파일(~$*), OS 임시 파일, .playwright-mcp/ 로그 제외
 ├── .claude/
+│   ├── agents/        # 프로젝트 서브 에이전트 (Claude Code가 자동으로 불러옴)
+│   │   ├── research-agent.md   # 주제 → 웹 조사 → research/<주제>/research.md
+│   │   └── blog-agent.md       # 자료 → 네이버 블로그 원고 → Playwright로 임시저장 (발행 안 함)
 │   ├── rules/
 │   │   ├── browser-rule-v1/   # Playwright MCP를 언제, 어떻게 쓸지 정한 규칙
 │   │   │   └── browser-rule-v1.md
@@ -26,8 +29,12 @@ agent_09/
 │           ├── SKILL.md
 │           ├── references/python_pptx_api.md
 │           └── scripts/build_pptx.py
+├── output/        # 서브 에이전트가 만든 산출물
+│   └── blog/      # blog-agent 원고: output/blog/<주제>/post.md (영문 원본)
+│       └── siri_ai_korean/
+│           └── post.md   # 시리 AI 한국어(iOS 27.2 베타) 가이드, 네이버에 임시저장
 ├── work/          # 게시용 콘텐츠 작업물 (블로그 원고와 카드뉴스)
-│   ├── blog/      # 네이버 블로그 원고: work/blog/<주제>/post.md (영문 원본)
+│   ├── blog/      # 이전 네이버 블로그 원고 (그대로 보관): work/blog/<주제>/post.md
 │   │   └── ai_agent/
 │   │       └── post.md
 │   └── card_news/ # 카드뉴스 기획안 .md (영어): work/card_news/<주제>/plan.md
@@ -38,15 +45,19 @@ agent_09/
 ├── references/    # 산출물 제작용 디자인 참고 자료 .md (영어)
 │   └── ppt/
 │       └── slide-design-system.md   # 오렌지 슬라이드 디자인 시스템 (색상, 폰트, 레이아웃)
-├── research/      # 자료조사 결과 .md (영어)
+├── research/      # 자료조사 결과 .md (영어), 새 노트는 research/<주제>/에 저장
+│   ├── blog_topic_discussion/
+│   │   └── discussion.md   # research-agent × blog-agent 블로그 주제 선정 토론 기록
+│   └── siri_ai_korean/
+│       └── research.md     # 시리 AI 한국어 출시(iOS 27.2) 조사 노트
 ├── report/        # 최종 보고서 .docx (한글)
 ├── slides/        # 발표 자료 .pptx (한글), mk-ppt 스킬로 생성
 └── translate/     # 모든 .md의 한글 번역본 (같은 상대 경로)
 ```
 
-- 자료조사 결과(`.md`)는 `research/`에 저장합니다.
+- 자료조사 결과(`.md`)는 주제별 폴더 `research/<주제>/research.md`에 저장합니다. 주제 조사는 `research-agent` 서브 에이전트에 맡깁니다.
 - 보고서(`.docx`)는 `report/`에 저장합니다. 산출물을 프로젝트 루트에 두지 않습니다.
-- 블로그 원고는 `work/blog/<주제>/post.md`에 저장합니다. 실제 게시하는 한글 본문은 번역본 `translate/work/blog/<주제>/post.md`입니다. Unsplash 이미지는 업로드용으로만 쓰고 저장소에는 보관하지 않습니다(출처와 링크는 `post.md`에 남김).
+- 새 블로그 원고는 `output/blog/<주제>/post.md`에 저장합니다. 실제 게시하는 한글 본문은 번역본 `translate/output/blog/<주제>/post.md`입니다. 네이버 블로그 작업은 `blog-agent` 서브 에이전트에 맡기고, 에이전트의 확인 단계를 사용자에게 전달합니다: (1) 원고 확인, (2) 로그인 질문 — 매번 빠짐없이 사용자에게 로그인 방법을 묻기, (3) 사용자가 직접 로그인. 답을 받을 때마다 SendMessage로 에이전트를 이어서 실행합니다. 에이전트는 임시저장만 하고 링크를 보고하며, 발행은 하지 않습니다. 이전 원고는 `work/blog/`에 그대로 둡니다. Unsplash 이미지는 업로드용으로만 쓰고 저장소에는 보관하지 않습니다(출처와 링크는 `post.md`에 남김).
 - 카드뉴스 기획안은 `work/card_news/<주제>/plan.md`에 저장합니다(8장, 1장은 썸네일). 한글본은 번역본 `translate/work/card_news/<주제>/plan.md`입니다.
 - 발표 자료(`.pptx`)는 `mk-ppt` 스킬(`.claude/skills/mk-ppt/`)을 사용해 `slides/`에 저장합니다.
 - `.pptx` 작업에는 `.claude/rules/ppt-rule-v1/ppt-rule-v1.md`를 가장 먼저 적용합니다. 우선순위: ppt-rule-v1 → 사용자의 디자인 `.md` → `mk-ppt` 기본값.
@@ -65,6 +76,6 @@ agent_09/
 
 ## 마크다운 파일 정책
 
-- 지금부터 작성되는 모든 `.md` 파일은 영어로 작성합니다.
-- 모든 `.md` 파일에 대해 `c:\Users\SBS\agent1004\agent_09\translate`에 동일한 상대 경로/파일명으로 한글 번역본을 저장합니다(예: `research/x.md` → `translate/research/x.md`). 번역본은 원본과 동시에 만듭니다.
+- 모든 `.md` 파일은 영어로 작성합니다.
+- 모든 `.md` 파일에 대해 `translate/`에 동일한 상대 경로/파일명으로 한글 번역본을 저장합니다(예: `research/x.md` → `translate/research/x.md`). 번역본은 원본과 동시에 만듭니다.
 - `.md` 파일이 수정되거나 삭제될 때마다 변경 사항을 확인하여 `translate`에 있는 대응 번역 파일에도 동일하게 수정(또는 삭제)을 반영하여 두 파일을 동기화합니다.

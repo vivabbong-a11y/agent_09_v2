@@ -16,6 +16,9 @@ agent_09/
 ├── CLAUDE.md      # Project rules (this file)
 ├── .gitignore     # Ignores Office lock files (~$*), OS junk and .playwright-mcp/ logs
 ├── .claude/
+│   ├── agents/        # Project sub agents (Claude Code loads them automatically)
+│   │   ├── research-agent.md   # Topic → web research → research/<topic>/research.md
+│   │   └── blog-agent.md       # Source → Naver blog draft → Playwright temporary save (never publish)
 │   ├── rules/
 │   │   ├── browser-rule-v1/   # Rules for when and how to use the Playwright MCP
 │   │   │   └── browser-rule-v1.md
@@ -26,8 +29,12 @@ agent_09/
 │           ├── SKILL.md
 │           ├── references/python_pptx_api.md
 │           └── scripts/build_pptx.py
+├── output/        # Deliverables produced by sub agents
+│   └── blog/      # blog-agent posts: output/blog/<topic>/post.md (English source)
+│       └── siri_ai_korean/
+│           └── post.md   # Siri AI Korean (iOS 27.2 beta) guide, saved to Naver as a temporary draft
 ├── work/          # Content work for publishing (blog posts and card news)
-│   ├── blog/      # Naver blog drafts: work/blog/<topic>/post.md (English source)
+│   ├── blog/      # Earlier Naver blog drafts (kept as is): work/blog/<topic>/post.md
 │   │   └── ai_agent/
 │   │       └── post.md
 │   └── card_news/ # Card news plans (.md, English): work/card_news/<topic>/plan.md
@@ -38,15 +45,19 @@ agent_09/
 ├── references/    # Design references (.md, English) for deliverables
 │   └── ppt/
 │       └── slide-design-system.md   # Orange slide design system (colors, fonts, layout)
-├── research/      # Research findings as .md (English)
+├── research/      # Research findings as .md (English); new notes go in research/<topic>/
+│   ├── blog_topic_discussion/
+│   │   └── discussion.md   # research-agent × blog-agent topic-selection discussion log
+│   └── siri_ai_korean/
+│       └── research.md     # Siri AI Korean launch (iOS 27.2) research notes
 ├── report/        # Final reports as .docx (Korean)
 ├── slides/        # Presentations as .pptx (Korean), built with the mk-ppt skill
 └── translate/     # Korean translations of every .md, mirroring relative paths
 ```
 
-- Save research results (`.md`) in `research/`.
+- Save research results (`.md`) in topic folders: `research/<topic>/research.md`. Delegate topic research to the `research-agent` sub agent.
 - Save reports (`.docx`) in `report/`. Do not leave deliverables in the project root.
-- Save blog drafts in `work/blog/<topic>/post.md`; the published Korean text is its translation in `translate/work/blog/<topic>/post.md`. Unsplash images are only used for upload and are not kept in the repo (credits and links stay in `post.md`).
+- Save new blog posts in `output/blog/<topic>/post.md`; the published Korean text is its translation in `translate/output/blog/<topic>/post.md`. Delegate Naver blog work to the `blog-agent` sub agent and relay its checkpoints to the user: (1) draft review, (2) the login question — always ask the user how to log in, every time, (3) the user logs in themselves. Resume the agent with SendMessage after each answer. The agent only saves as a temporary draft (임시저장) and reports the link; it never publishes. Older drafts in `work/blog/` stay where they are. Unsplash images are only used for upload and are not kept in the repo (credits and links stay in `post.md`).
 - Save card news plans in `work/card_news/<topic>/plan.md` (8 cards, card 1 is the thumbnail); the Korean text is its translation in `translate/work/card_news/<topic>/plan.md`.
 - Save presentations (`.pptx`) in `slides/`, using the `mk-ppt` skill (`.claude/skills/mk-ppt/`).
 - For any `.pptx` work, apply `.claude/rules/ppt-rule-v1/ppt-rule-v1.md` first. Priority: ppt-rule-v1 → the user's design `.md` → `mk-ppt` defaults.
@@ -65,6 +76,6 @@ agent_09/
 
 ## Markdown File Policy
 
-- All `.md` files created from now on must be written in English.
-- For every `.md` file, save a Korean translation at `c:\Users\SBS\agent1004\agent_09\translate`, mirroring the same relative path/filename (e.g. `research/x.md` → `translate/research/x.md`). Create the translation at the same time as the original.
+- Write every `.md` file in English.
+- For every `.md` file, save a Korean translation in `translate/`, mirroring the same relative path/filename (e.g. `research/x.md` → `translate/research/x.md`). Create the translation at the same time as the original.
 - Whenever a `.md` file is modified or deleted, check for the change and apply the same update (or deletion) to its corresponding translation file in `translate`, keeping both in sync.
